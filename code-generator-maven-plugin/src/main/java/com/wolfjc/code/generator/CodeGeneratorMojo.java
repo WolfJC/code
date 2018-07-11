@@ -19,5 +19,6 @@ public class CodeGeneratorMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
+
     }
 }
