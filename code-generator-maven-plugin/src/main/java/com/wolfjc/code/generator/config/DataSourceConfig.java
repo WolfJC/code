@@ -9,6 +9,15 @@ package com.wolfjc.code.generator.config;
  */
 public class DataSourceConfig {
 
+
+    public static final String URL = "datasource.url";
+
+    public static final String USERNAME = "datasource.username";
+
+    public static final String PASSWORD = "datasource.password";
+
+    public static final String DRIVER_CLASS_NAME = "datasource.driver-class-name";
+
     /**
      * 数据源连接
      */

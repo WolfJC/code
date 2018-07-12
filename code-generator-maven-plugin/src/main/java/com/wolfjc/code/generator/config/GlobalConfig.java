@@ -16,7 +16,9 @@ public class GlobalConfig {
      */
     private DataSourceConfig dataSourceConfig;
 
-
+    /**
+     * 代码生成选项
+     */
     private CodeGeneratorOption codeGeneratorOption;
 
 
