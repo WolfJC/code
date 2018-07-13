@@ -1,17 +1,12 @@
-package com.wolfjc.code.generator.db;
+package com.wolfjc.code.generator.template;
 
 /**
- * 列信息
+ * 属性的模板信息
  *
  * @author xdd
- * @date 2018/7/12.
+ * @date 2018/7/13.
  */
-public class ColumnInfo {
-
-    /**
-     * 列名
-     */
-    private String columnName;
+public class AttributeTempalteInfo {
 
     /**
      * 数据类型
@@ -19,18 +14,15 @@ public class ColumnInfo {
     private String dataType;
 
     /**
+     * 属性名
+     */
+    private String attributeName;
+
+    /**
      * 备注
      */
     private String remarks;
 
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
 
     public String getDataType() {
         return dataType;
@@ -38,6 +30,14 @@ public class ColumnInfo {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public String getAttributeName() {
+        return attributeName;
+    }
+
+    public void setAttributeName(String attributeName) {
+        this.attributeName = attributeName;
     }
 
     public String getRemarks() {

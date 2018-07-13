@@ -12,5 +12,7 @@
         <module>code-generator-maven-plugin</module>
     </modules>
 
+    <build>
 
+    </build>
 </project>

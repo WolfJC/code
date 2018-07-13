@@ -1,13 +1,18 @@
 package com.wolfjc.code.generator.parse;
 
+import com.wolfjc.code.generator.config.CodeGeneratorOption;
 import com.wolfjc.code.generator.config.DataSourceConfig;
 import com.wolfjc.code.generator.config.GlobalConfig;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -27,8 +32,10 @@ public class PropertiesConfigPhase implements ConfigPhase {
         ResourceBundle resource = getResource(inputStream);
 
         DataSourceConfig dataSourceConfig = getDataSourceConfig(resource);
-
         globalConfig.setDataSourceConfig(dataSourceConfig);
+
+        CodeGeneratorOption codeGenratorOption = getCodeGenratorOption(resource);
+        globalConfig.setCodeGeneratorOption(codeGenratorOption);
 
         return globalConfig;
     }
@@ -47,7 +54,6 @@ public class PropertiesConfigPhase implements ConfigPhase {
     }
 
     /**
-     *
      * @param inputStream
      * @return
      */
@@ -55,7 +61,6 @@ public class PropertiesConfigPhase implements ConfigPhase {
         ResourceBundle resource = null;
         try {
             resource = new PropertyResourceBundle(inputStream);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,9 +74,7 @@ public class PropertiesConfigPhase implements ConfigPhase {
      * @return
      */
     private DataSourceConfig getDataSourceConfig(ResourceBundle resourceBundle) {
-        if (resourceBundle == null) {
-            return null;
-        }
+        Objects.requireNonNull(resourceBundle);
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         String url = resourceBundle.getString(DataSourceConfig.URL);
         String password = resourceBundle.getString(DataSourceConfig.PASSWORD);
@@ -82,5 +85,26 @@ public class PropertiesConfigPhase implements ConfigPhase {
         dataSourceConfig.setPassword(password);
         dataSourceConfig.setUsername(userName);
         return dataSourceConfig;
+    }
+
+    /**
+     * 获取其它配置选项
+     *
+     * @param resourceBundle
+     * @return
+     */
+    private CodeGeneratorOption getCodeGenratorOption(ResourceBundle resourceBundle) {
+        Objects.requireNonNull(resourceBundle);
+        CodeGeneratorOption codeGeneratorOption = new CodeGeneratorOption();
+        String tableArrays = resourceBundle.getString(CodeGeneratorOption.TABLE_NAME);
+        List<String> tableList = Arrays.asList(StringUtils.split(tableArrays, ","));
+        codeGeneratorOption.setTableName(tableList);
+        String basePackage = resourceBundle.getString(CodeGeneratorOption.BASE_PACKAGE);
+        codeGeneratorOption.setBasePackage(basePackage);
+        String enrityArrays = resourceBundle.getString(CodeGeneratorOption.ENITTY_NAME);
+        List<String> entityList = Arrays.asList(StringUtils.split(enrityArrays));
+        codeGeneratorOption.setEntityNames(entityList);
+        return codeGeneratorOption;
+
     }
 }

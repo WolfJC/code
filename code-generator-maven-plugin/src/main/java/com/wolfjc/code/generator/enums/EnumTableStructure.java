@@ -14,7 +14,7 @@ public enum EnumTableStructure {
     /**
      * 数据类型
      */
-    DATA_TYPE("DATA_TYPE"),
+    DATA_TYPE("TYPE_NAME"),
 
     /**
      * 备注
