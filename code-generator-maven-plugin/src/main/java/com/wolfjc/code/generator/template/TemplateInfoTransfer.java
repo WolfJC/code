@@ -8,6 +8,7 @@ import com.wolfjc.code.generator.enums.EnumJavaType;
 import com.wolfjc.code.generator.enums.EnumPackageType;
 import com.wolfjc.code.generator.template.convert.CamelConvert;
 import com.wolfjc.code.generator.template.convert.Convert;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,8 +48,12 @@ public class TemplateInfoTransfer {
      * @return
      */
     public Collection<TemplateInfo> transfer(Collection<TableInfo> tableInfos) {
-        Collection<TemplateInfo> templateInfos = new ArrayList<>();
-
+        if (CollectionUtils.isEmpty(tableInfos)){
+            return new ArrayList<>();
+        }
+        Collection<TemplateInfo> templateInfos = tableInfos.stream()
+                .map(tableInfo -> transfer(tableInfo))
+                .collect(Collectors.toList());
 
         return templateInfos;
     }
@@ -62,8 +67,16 @@ public class TemplateInfoTransfer {
      */
     public TemplateInfo transfer(TableInfo tableInfo) {
         TemplateInfo templateInfo = new TemplateInfo();
+        //转换为实体模板信息
         EntityTemplateInfo entityTemplateInfo = transferToEntity(tableInfo);
         templateInfo.setEntityTemplateInfo(entityTemplateInfo);
+        //todo::service模板信息
+
+        //todo::dao
+
+        //todo::serviceImpl
+
+        //todo::mapper
         return templateInfo;
 
     }

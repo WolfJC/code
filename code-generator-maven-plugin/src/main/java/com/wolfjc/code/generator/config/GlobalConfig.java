@@ -21,6 +21,11 @@ public class GlobalConfig {
      */
     private CodeGeneratorOption codeGeneratorOption;
 
+    /**
+     * 模板文件配置
+     */
+    private TemplateConfig templateConfig;
+
 
     public DataSourceConfig getDataSourceConfig() {
         return dataSourceConfig;

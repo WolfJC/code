@@ -3,6 +3,9 @@ package com.wolfjc.code.generator.parse;
 import com.wolfjc.code.generator.config.CodeGeneratorOption;
 import com.wolfjc.code.generator.config.DataSourceConfig;
 import com.wolfjc.code.generator.config.GlobalConfig;
+import com.wolfjc.code.generator.config.TableConfig;
+import javafx.scene.control.Tab;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -11,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.PropertyResourceBundle;
@@ -98,12 +102,12 @@ public class PropertiesConfigPhase implements ConfigPhase {
         CodeGeneratorOption codeGeneratorOption = new CodeGeneratorOption();
         String tableArrays = resourceBundle.getString(CodeGeneratorOption.TABLE_NAME);
         List<String> tableList = Arrays.asList(StringUtils.split(tableArrays, ","));
-        codeGeneratorOption.setTableName(tableList);
         String basePackage = resourceBundle.getString(CodeGeneratorOption.BASE_PACKAGE);
         codeGeneratorOption.setBasePackage(basePackage);
         String enrityArrays = resourceBundle.getString(CodeGeneratorOption.ENITTY_NAME);
         List<String> entityList = Arrays.asList(StringUtils.split(enrityArrays));
-        codeGeneratorOption.setEntityNames(entityList);
+        Collection<TableConfig> tableConfigs = TableConfig.reGroup(tableList,entityList);
+        codeGeneratorOption.setTableConfigs(tableConfigs);
         return codeGeneratorOption;
 
     }

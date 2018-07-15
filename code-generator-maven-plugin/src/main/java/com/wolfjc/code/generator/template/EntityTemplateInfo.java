@@ -21,6 +21,21 @@ public class EntityTemplateInfo {
     private String className;
 
     /**
+     * 作者
+     */
+    private String author;
+
+    /**
+     * 类备注
+     */
+    private String classRemarks;
+
+    /**
+     * 时间
+     */
+    private String dateTime;
+
+    /**
      * 属性
      */
     private Collection<AttributeTempalteInfo> attributes;
@@ -60,5 +75,29 @@ public class EntityTemplateInfo {
 
     public void setImports(Collection<String> imports) {
         this.imports = imports;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getClassRemarks() {
+        return classRemarks;
+    }
+
+    public void setClassRemarks(String classRemarks) {
+        this.classRemarks = classRemarks;
     }
 }

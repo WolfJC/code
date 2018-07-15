@@ -32,6 +32,7 @@ public class DataTypeMapper {
         map.put(EnumDbType.CHAR.getType(), EnumJavaType.STRING);
         map.put(EnumDbType.FLOAT.getType(), EnumJavaType.FLOAT);
         map.put(EnumDbType.DOUBLE.getType(), EnumJavaType.DOUBLE);
+        map.put(EnumDbType.SMALLINT.getType(),EnumJavaType.INTEGER);
         map.put(EnumDbType.INT.getType(), EnumJavaType.INTEGER);
         map.put(EnumDbType.INTEGER.getType(), EnumJavaType.INTEGER);
         map.put(EnumDbType.MEDIUMINT.getType(), EnumJavaType.INTEGER);

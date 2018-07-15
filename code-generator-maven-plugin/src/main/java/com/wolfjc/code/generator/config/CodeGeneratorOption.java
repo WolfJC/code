@@ -28,6 +28,7 @@ public class CodeGeneratorOption {
 
     private Collection<TableConfig> tableConfigs;
 
+
     public String getBasePackage() {
         return basePackage;
     }
