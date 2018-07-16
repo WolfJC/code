@@ -3,9 +3,10 @@ package com.wolfjc.code.generator.db;
 import com.wolfjc.code.generator.config.CodeGeneratorOption;
 import com.wolfjc.code.generator.config.DataSourceConfig;
 import com.wolfjc.code.generator.config.GlobalConfig;
+import com.wolfjc.code.generator.config.TableConfig;
 import com.wolfjc.code.generator.enums.EnumTableInfo;
 import com.wolfjc.code.generator.enums.EnumTableStructure;
-import org.apache.commons.lang3.StringUtils;
+import com.wolfjc.code.generator.enums.EnumYesOrNo;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 
@@ -52,7 +53,7 @@ public class TableInfoHandle {
 
         initConnection(dataSourceConfig);
 
-        Collection<TableInfo> tableInfos = getTableInfos(codeGeneratorOption.getTableNames());
+        Collection<TableInfo> tableInfos = getTableInfos(codeGeneratorOption.getTableConfigs());
 
         closeConnection();
 
@@ -93,12 +94,12 @@ public class TableInfoHandle {
 
     }
 
-    private Collection<TableInfo> getTableInfos(Collection<String> tableNames){
-        return tableNames.stream()
-                .map(tableName->{
+    private Collection<TableInfo> getTableInfos(Collection<TableConfig> configs){
+        return configs.stream()
+                .map(config->{
                     TableInfo tableInfo = null;
                     try {
-                         tableInfo = getTableInfo(tableName);
+                         tableInfo = getTableInfo(config);
                     }catch (SQLException e){
                         log.error("获取表结构信息失败",e);
                     }
@@ -110,17 +111,21 @@ public class TableInfoHandle {
     /**
      * 获取表结构信息
      *
-     * @param tableName
+     * @param config
      */
-    private TableInfo getTableInfo(String tableName) throws SQLException {
-        if (StringUtils.isEmpty(tableName)) {
+    private TableInfo getTableInfo(TableConfig config) throws SQLException {
+        if (config == null) {
             return null;
         }
         DatabaseMetaData metaData = connection.getMetaData();
 
         TableInfo tableInfo = new TableInfo();
 
-        tableInfo.setTableName(tableName);
+        String tableName = config.getTableName();
+
+        tableInfo.setTableName(config.getTableName());
+
+        tableInfo.setEntityName(config.getEntityName());
 
         ResultSet resultSet = metaData.getTables(null, "%", tableName, new String[]{"TABLE"});
 
@@ -158,6 +163,8 @@ public class TableInfoHandle {
             columnInfo.setDataType(dataType);
             String remarks = resultSet.getString(EnumTableStructure.REMARKS.getName());
             columnInfo.setRemarks(remarks);
+            String autoIncrementStr = resultSet.getString(EnumTableStructure.IS_AUTOINCREMENT.getName());
+            columnInfo.setAutoincrement(EnumYesOrNo.YES.getName().equals(autoIncrementStr));
             columnInfos.add(columnInfo);
         }
 

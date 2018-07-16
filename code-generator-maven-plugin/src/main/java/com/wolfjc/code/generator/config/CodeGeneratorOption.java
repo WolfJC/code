@@ -21,10 +21,24 @@ public class CodeGeneratorOption {
 
     public static final String ENITTY_NAME = "codeGeneratorOption.TableConfig.entityNames";
 
+    public static final String AUTHOR = "codeGeneratorOption.author";
+
+    public static final String DATETIME = "codeGeneratorOption.dateTime";
+
     /**
      * 基础包名
      */
     private String basePackage;
+
+    /**
+     * 作者
+     */
+    private String author;
+
+    /**
+     * 生成时间
+     */
+    private String dateTime;
 
     private Collection<TableConfig> tableConfigs;
 
@@ -44,6 +58,23 @@ public class CodeGeneratorOption {
 
     public void setTableConfigs(Collection<TableConfig> tableConfigs) {
         this.tableConfigs = tableConfigs;
+    }
+
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     /**

@@ -21,6 +21,10 @@ public class ${className} implements Serializable {
     /**
      * ${attr.remarks}
      */
+    <#if attr.autoincrement>
+    @Id
+    </#if>
+    @Column(name = "${attr.columnName}")
     private ${attr.dataType} ${attr.attributeName};
     </#list>
 }

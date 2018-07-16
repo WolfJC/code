@@ -4,8 +4,6 @@ import com.wolfjc.code.generator.config.CodeGeneratorOption;
 import com.wolfjc.code.generator.config.DataSourceConfig;
 import com.wolfjc.code.generator.config.GlobalConfig;
 import com.wolfjc.code.generator.config.TableConfig;
-import javafx.scene.control.Tab;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -31,7 +29,7 @@ public class PropertiesConfigPhase implements ConfigPhase {
     @Override
     public GlobalConfig phase(InputStream inputStream) {
 
-        GlobalConfig globalConfig = new GlobalConfig();
+        GlobalConfig globalConfig = GlobalConfig.newInstance();
 
         ResourceBundle resource = getResource(inputStream);
 
@@ -105,9 +103,13 @@ public class PropertiesConfigPhase implements ConfigPhase {
         String basePackage = resourceBundle.getString(CodeGeneratorOption.BASE_PACKAGE);
         codeGeneratorOption.setBasePackage(basePackage);
         String enrityArrays = resourceBundle.getString(CodeGeneratorOption.ENITTY_NAME);
-        List<String> entityList = Arrays.asList(StringUtils.split(enrityArrays));
+        List<String> entityList = Arrays.asList(StringUtils.split(enrityArrays,","));
         Collection<TableConfig> tableConfigs = TableConfig.reGroup(tableList,entityList);
         codeGeneratorOption.setTableConfigs(tableConfigs);
+        String author = resourceBundle.getString(CodeGeneratorOption.AUTHOR);
+        codeGeneratorOption.setAuthor(author);
+        String dateTime = resourceBundle.getString(CodeGeneratorOption.DATETIME);
+        codeGeneratorOption.setDateTime(dateTime);
         return codeGeneratorOption;
 
     }

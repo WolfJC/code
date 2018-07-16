@@ -7,25 +7,29 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2018/7/13.
  */
 public enum EnumPackageType {
-    SERVICE("service", ".service"),
-    DOMAIN("domain", ".domain"),
-    ENTITY("entity", ".domain.entity"),
-    BO("bo", ".domain.bo"),
-    VO("vo", ".domain.vo"),
-    QUERY("query", ".domain.query"),
-    SERVICE_IMPL("impl", ".service.impl"),
-    DAO("dao", ".dao");
+    SERVICE("service", ".service","Service"),
+    DOMAIN("domain", ".domain",""),
+    ENTITY("entity", ".domain.entity",""),
+    BO("bo", ".domain.bo","BO"),
+    VO("vo", ".domain.vo","VO"),
+    QUERY("query", ".domain.query","Query"),
+    SERVICE_IMPL("impl", ".service.impl","ServiceImpl"),
+    DAO("dao", ".dao","Dao");
 
 
-    EnumPackageType(String type, String suffix) {
+    EnumPackageType(String type, String suffix, String camelName) {
         this.type = type;
         this.suffix = suffix;
+        this.camelName = camelName;
     }
 
     private String type;
 
 
     private String suffix;
+
+
+    private String camelName;
 
     public String getType() {
         return type;
@@ -41,6 +45,14 @@ public enum EnumPackageType {
 
     public void setSuffix(String suffix) {
         this.suffix = suffix;
+    }
+
+    public String getCamelName() {
+        return camelName;
+    }
+
+    public void setCamelName(String camelName) {
+        this.camelName = camelName;
     }
 
     /**

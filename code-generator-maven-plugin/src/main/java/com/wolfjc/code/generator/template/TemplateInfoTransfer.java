@@ -48,7 +48,7 @@ public class TemplateInfoTransfer {
      * @return
      */
     public Collection<TemplateInfo> transfer(Collection<TableInfo> tableInfos) {
-        if (CollectionUtils.isEmpty(tableInfos)){
+        if (CollectionUtils.isEmpty(tableInfos)) {
             return new ArrayList<>();
         }
         Collection<TemplateInfo> templateInfos = tableInfos.stream()
@@ -70,13 +70,16 @@ public class TemplateInfoTransfer {
         //转换为实体模板信息
         EntityTemplateInfo entityTemplateInfo = transferToEntity(tableInfo);
         templateInfo.setEntityTemplateInfo(entityTemplateInfo);
-        //todo::service模板信息
-
-        //todo::dao
-
-        //todo::serviceImpl
-
-        //todo::mapper
+        //service模板信息
+        CommonTemplateInfo serviceTemplateInfo = transferToService(tableInfo);
+        templateInfo.setServiceTemplateInfo(serviceTemplateInfo);
+        //dao
+        CommonTemplateInfo daoTemplateInfo = transferToDao(tableInfo);
+        templateInfo.setDaoTemplateInfo(daoTemplateInfo);
+        //serviceImpl
+        CommonTemplateInfo serviceImplTemplateInfo = transferToServiceImpl(tableInfo);
+        templateInfo.setServiceImplTemplateInfo(serviceImplTemplateInfo);
+        //mapper
         return templateInfo;
 
     }
@@ -90,18 +93,139 @@ public class TemplateInfoTransfer {
 
         EntityTemplateInfo entityTemplateInfo = new EntityTemplateInfo();
 
-        entityTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.DOMAIN);
+        entityTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.DOMAIN.getSuffix());
 
         Collection<AttributeTempalteInfo> attributes = getAttributes(tableInfo.getColumnInfos());
 
         entityTemplateInfo.setAttributes(attributes);
 
-        String entityName = codeGeneratorOption.findEntityName(tableInfo.getTableName());
+        entityTemplateInfo.setClassName(tableInfo.getEntityName());
 
-        entityTemplateInfo.setClassName(entityName);
+        entityTemplateInfo.setClassRemarks(tableInfo.getRemarks());
+
+        entityTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
+
+        entityTemplateInfo.setDateTime(DefaultValueHandle.handleDenfaultDateTime(codeGeneratorOption.getDateTime()));
 
         return entityTemplateInfo;
     }
+
+    /**
+     * service接口模板生成
+     *
+     * @param tableInfo
+     * @return
+     */
+    public CommonTemplateInfo transferToService(TableInfo tableInfo) {
+        CommonTemplateInfo commonTemplateInfo = new CommonTemplateInfo();
+
+        commonTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.SERVICE.getSuffix());
+
+        commonTemplateInfo.setClassName(tableInfo.getEntityName());
+
+        commonTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
+
+        commonTemplateInfo.setDateTime(DefaultValueHandle.handleDenfaultDateTime(codeGeneratorOption.getDateTime()));
+
+        commonTemplateInfo.setClassRemarks(tableInfo.getEntityName() + "服务接口定义");
+
+        Collection<String> imports = new ArrayList<>();
+        importEntity(imports, tableInfo.getEntityName());
+        commonTemplateInfo.setImports(imports);
+
+        return commonTemplateInfo;
+    }
+
+    /**
+     * dao层接口模板生成
+     *
+     * @param tableInfo
+     * @return
+     */
+    public CommonTemplateInfo transferToDao(TableInfo tableInfo) {
+        CommonTemplateInfo daoTemplateInfo = new CommonTemplateInfo();
+
+        daoTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.DAO.getSuffix());
+
+        daoTemplateInfo.setClassName(tableInfo.getEntityName());
+
+        daoTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
+
+        daoTemplateInfo.setDateTime(defaultTime());
+
+        daoTemplateInfo.setClassRemarks(tableInfo.getEntityName() + " dao层接口定义");
+
+        Collection<String> imports = new ArrayList<>();
+        importEntity(imports, tableInfo.getEntityName());
+        daoTemplateInfo.setImports(imports);
+
+        return daoTemplateInfo;
+    }
+
+    /**
+     * 默认时间
+     *
+     * @return
+     */
+    private String defaultTime() {
+        return DefaultValueHandle.handleDenfaultDateTime(codeGeneratorOption.getDateTime());
+    }
+
+
+    /**
+     * service实现层模板生成
+     *
+     * @param tableInfo
+     * @return
+     */
+    public CommonTemplateInfo transferToServiceImpl(TableInfo tableInfo) {
+        CommonTemplateInfo serviceImplTemplateInfo = new CommonTemplateInfo();
+
+        String entityName = tableInfo.getEntityName();
+
+        serviceImplTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.SERVICE_IMPL.getSuffix());
+
+        serviceImplTemplateInfo.setClassName(entityName);
+
+        serviceImplTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
+
+        serviceImplTemplateInfo.setDateTime(defaultTime());
+
+        serviceImplTemplateInfo.setClassRemarks(tableInfo.getEntityName() + "service实现层");
+
+        Collection<String> imports = new ArrayList<>();
+        importEntity(imports, entityName);
+        importService(imports,entityName);
+        importDao(imports,entityName);
+        serviceImplTemplateInfo.setImports(imports);
+
+        return serviceImplTemplateInfo;
+    }
+
+    /**
+     * 导入实体
+     *
+     * @param imports
+     * @param entityName
+     */
+    private void importEntity(Collection<String> imports, String entityName) {
+        String entityImport = codeGeneratorOption.getBasePackage() +EnumPackageType.DOMAIN.getSuffix() + entityName;
+        imports.add(entityImport);
+    }
+
+
+    private void importDao(Collection<String> imports,String entityName){
+        String daoImport = codeGeneratorOption.getBasePackage() + EnumPackageType.DAO.getSuffix() + entityName
+                + EnumPackageType.DAO.getCamelName();
+        imports.add(daoImport);
+    }
+
+    private void importService(Collection<String> imports,String entityName){
+        String daoImport = codeGeneratorOption.getBasePackage() + EnumPackageType.SERVICE.getSuffix() + entityName
+                + EnumPackageType.SERVICE.getCamelName();
+        imports.add(daoImport);
+    }
+
 
     /**
      * 将列名转换带输出的属性
@@ -117,9 +241,13 @@ public class TemplateInfoTransfer {
                     EnumJavaType enumJavaType = DataTypeMapper.findDataType(columnInfo.getDataType());
                     attribute.setDataType(enumJavaType.getType());
 
-                    attribute.setAttributeName(columnInfo.getColumnName());
+                    attribute.setAttributeName(convert.convert(columnInfo.getColumnName()));
 
                     attribute.setRemarks(columnInfo.getRemarks());
+
+                    attribute.setAutoincrement(columnInfo.getAutoincrement());
+
+                    attribute.setColumnName(columnInfo.getColumnName());
 
                     return attribute;
                 }).collect(Collectors.toList());

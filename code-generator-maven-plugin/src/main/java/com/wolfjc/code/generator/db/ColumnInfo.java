@@ -23,6 +23,11 @@ public class ColumnInfo {
      */
     private String remarks;
 
+    /**
+     * 是否自增
+     */
+    private Boolean isAutoincrement;
+
 
     public String getColumnName() {
         return columnName;
@@ -46,5 +51,13 @@ public class ColumnInfo {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Boolean getAutoincrement() {
+        return isAutoincrement;
+    }
+
+    public void setAutoincrement(Boolean autoincrement) {
+        isAutoincrement = autoincrement;
     }
 }

@@ -26,6 +26,17 @@ public class GlobalConfig {
      */
     private TemplateConfig templateConfig;
 
+    private GlobalConfig() {
+    }
+
+    private static class GlobalConfigHolder {
+        private static final GlobalConfig globalConfig = new GlobalConfig();
+    }
+
+    public static GlobalConfig newInstance() {
+        return GlobalConfigHolder.globalConfig;
+    }
+
 
     public DataSourceConfig getDataSourceConfig() {
         return dataSourceConfig;

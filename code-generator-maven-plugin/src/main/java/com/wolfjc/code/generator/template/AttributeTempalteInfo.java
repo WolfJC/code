@@ -23,6 +23,17 @@ public class AttributeTempalteInfo {
      */
     private String remarks;
 
+    /**
+     * 是否自增
+     *
+     */
+    private Boolean isAutoincrement;
+
+    /**
+     * 数据库中的列名
+     */
+    private String columnName;
+
 
     public String getDataType() {
         return dataType;
@@ -46,5 +57,22 @@ public class AttributeTempalteInfo {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+
+    public Boolean getAutoincrement() {
+        return isAutoincrement;
+    }
+
+    public void setAutoincrement(Boolean autoincrement) {
+        isAutoincrement = autoincrement;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 }

@@ -7,6 +7,8 @@ import com.wolfjc.code.generator.parse.ConfigPhase;
 import com.wolfjc.code.generator.parse.PropertiesConfigPhase;
 import com.wolfjc.code.generator.template.TemplateInfo;
 import com.wolfjc.code.generator.template.TemplateInfoTransfer;
+import com.wolfjc.code.generator.template.generate.FileGenerate;
+import com.wolfjc.code.generator.template.generate.FreeMarkerGenerator;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 
@@ -35,6 +37,10 @@ public class CodeGeneratorProcessor {
     private TemplateInfoTransfer templateInfoTransfer;
 
 
+
+    private FileGenerate fileGenerate;
+
+
     /**
      * 设置解析器
      *
@@ -58,6 +64,10 @@ public class CodeGeneratorProcessor {
         this.templateInfoTransfer = templateInfoTransfer;
     }
 
+    public void setFileGenerate(FileGenerate fileGenerate) {
+        this.fileGenerate = fileGenerate;
+    }
+
     /**
      * maven 插件日志工具
      */
@@ -70,10 +80,26 @@ public class CodeGeneratorProcessor {
         log.info("=======开始生成模板代码========");
         GlobalConfig globalConfig = getAllConfig(file);
 
+        initHandle(globalConfig);
+
         buildProjectStructure();
 
         generateCode(globalConfig);
 
+    }
+
+    /**
+     * 根据配置初始化各种处理器
+     *
+     * @param globalConfig
+     */
+    private void initHandle(GlobalConfig globalConfig){
+
+        this.setTableInfoHandle(new TableInfoHandle());
+
+        this.setTemplateInfoTransfer(new TemplateInfoTransfer(globalConfig.getCodeGeneratorOption()));
+
+        this.setFileGenerate(new FreeMarkerGenerator());
     }
 
 
@@ -111,6 +137,7 @@ public class CodeGeneratorProcessor {
 
         Collection<TemplateInfo> templateInfos = templateInfoTransfer.transfer(tableInfos);
 
+        fileGenerate.generate(templateInfos);
 
         log.info("");
 
@@ -126,14 +153,18 @@ public class CodeGeneratorProcessor {
         //默认使用properties文件
         codeGeneratorProcessor.setConfigPhase(new PropertiesConfigPhase());
 
-        codeGeneratorProcessor.setTableInfoHandle(new TableInfoHandle());
-
-        //todo::选择模板转换器
-//        codeGeneratorProcessor.setTemplateInfoTransfer(new TemplateInfoTransfer());
-
         return codeGeneratorProcessor;
     }
 
     private CodeGeneratorProcessor() {
+    }
+
+
+    public static void main(String[] args) {
+        File configPath = new File("C:\\Users\\xudongdong\\Home\\code\\code-generator-example\\src\\main\\resources\\code-generator.properties");
+
+        CodeGeneratorProcessor codeGeneratorProcessor = CodeGeneratorProcessor.newInstance();
+
+        codeGeneratorProcessor.generate(configPath);
     }
 }

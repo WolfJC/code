@@ -19,7 +19,12 @@ public enum EnumTableStructure {
     /**
      * 备注
      */
-    REMARKS("REMARKS");
+    REMARKS("REMARKS"),
+
+    /**
+     * 是否自增
+     */
+    IS_AUTOINCREMENT("IS_AUTOINCREMENT");
 
 
     EnumTableStructure(String name) {

@@ -15,6 +15,12 @@ public class TableInfo {
      */
     private String tableName;
 
+
+    /**
+     * 实体名
+     */
+    private String entityName;
+
     /**
      * 表备注
      */
@@ -49,5 +55,13 @@ public class TableInfo {
 
     public void setColumnInfos(Collection<ColumnInfo> columnInfos) {
         this.columnInfos = columnInfos;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
     }
 }

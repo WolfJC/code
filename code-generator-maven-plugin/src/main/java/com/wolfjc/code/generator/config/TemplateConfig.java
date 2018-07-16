@@ -10,6 +10,9 @@ public class TemplateConfig {
      */
     public static final String DEFAULT_RELATIVE_PATH = "code-generator-maven-plugin/src/main/resources/templates";
     public static final String DEFAULT_ENTITY = "entity.ftl";
+    public static final String DEFAULT_SERVICE = "service.ftl";
+    public static final String DEFAULT_DAO = "dao.ftl";
+    public static final String DEFAULT_SERVICE_IMPL = "serviceImpl.ftl";
     public static final String DEFAULT_SERVICE_REALTIVE_PATH = DEFAULT_RELATIVE_PATH+"/service.ftl";
     public static final String DEFAULT_SERVICE_IMPL_REALTIVE_PATH = DEFAULT_RELATIVE_PATH+"/serviceImpl.ftl";
     public static final String DEFAULT_CONTROLLER_REALTIVE_PATH = DEFAULT_RELATIVE_PATH+"/controller.ftl";
