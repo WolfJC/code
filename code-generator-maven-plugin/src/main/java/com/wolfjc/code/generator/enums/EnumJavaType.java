@@ -1,7 +1,5 @@
 package com.wolfjc.code.generator.enums;
 
-import java.util.Date;
-
 /**
  * java数据类型
  *
@@ -9,15 +7,16 @@ import java.util.Date;
  * @date 2018/7/13.
  */
 public enum EnumJavaType {
-    INTEGER(Integer.class.getSimpleName()),
-    LONG(Long.class.getSimpleName()),
-    SHORT(Short.class.getSimpleName()),
-    BYTE(Byte.class.getSimpleName()),
-    STRING(String.class.getSimpleName()),
-    FLOAT(Float.class.getSimpleName()),
-    DOUBLE(Double.class.getSimpleName()),
-    BOOLEAN(Boolean.class.getSimpleName()),
-    DATE(Date.class.getSimpleName());
+
+    INTEGER("Integer"),
+    LONG("Long"),
+    SHORT("Short"),
+    BYTE("Byte"),
+    STRING("String"),
+    FLOAT("Float"),
+    DOUBLE("Double"),
+    BOOLEAN("Boolean"),
+    DATE("Date");
 
     EnumJavaType(String type) {
 

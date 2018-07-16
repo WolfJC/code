@@ -159,12 +159,12 @@ public class CodeGeneratorProcessor {
     private CodeGeneratorProcessor() {
     }
 
-
-    public static void main(String[] args) {
-        File configPath = new File("C:\\Users\\xudongdong\\Home\\code\\code-generator-example\\src\\main\\resources\\code-generator.properties");
-
-        CodeGeneratorProcessor codeGeneratorProcessor = CodeGeneratorProcessor.newInstance();
-
-        codeGeneratorProcessor.generate(configPath);
-    }
+//
+//    public static void main(String[] args) {
+//        File configPath = new File("C:\\Users\\xudongdong\\Home\\code\\code-generator-example\\src\\main\\resources\\code-generator.properties");
+//
+//        CodeGeneratorProcessor codeGeneratorProcessor = CodeGeneratorProcessor.newInstance();
+//
+//        codeGeneratorProcessor.generate(configPath);
+//    }
 }
