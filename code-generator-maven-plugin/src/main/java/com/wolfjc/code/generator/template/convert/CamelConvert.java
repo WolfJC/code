@@ -11,7 +11,11 @@ public class CamelConvert implements Convert {
 
     @Override
     public String convert(String columnName) {
-
+        if (columnName.indexOf("_") < 0) {
+            //不存在下划线，可能是驼峰格式，不处理
+            return columnName;
+        }
+        
         String[] strings = columnName.split("_");
 
         if (strings == null || strings.length == 0) {
