@@ -1,5 +1,6 @@
 package com.wolfjc.code.generator.template.generate;
 
+import com.wolfjc.code.generator.config.GlobalConfig;
 import com.wolfjc.code.generator.config.TemplateConfig;
 import com.wolfjc.code.generator.template.CommonTemplateInfo;
 import com.wolfjc.code.generator.template.EntityTemplateInfo;
@@ -31,15 +32,19 @@ public class FreeMarkerGenerator implements FileGenerate {
      */
     private Configuration cfg;
 
+    private TemplateConfig templateConfig;
+
 
     public FreeMarkerGenerator(){
+        GlobalConfig globalConfig = GlobalConfig.newInstance();
+        templateConfig = globalConfig.getTemplateConfig();
         this.cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
         cfg.setWrapUncheckedExceptions(true);
         try {
-            cfg.setDirectoryForTemplateLoading(new File(TemplateConfig.DEFAULT_RELATIVE_PATH));
+            cfg.setDirectoryForTemplateLoading(new File(templateConfig.getBaseTemplatePath()));
         } catch (IOException e) {
             log.error("初始化freemarker模板配置失败",e);
             e.printStackTrace();

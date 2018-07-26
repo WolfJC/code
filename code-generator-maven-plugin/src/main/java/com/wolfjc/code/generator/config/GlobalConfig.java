@@ -53,4 +53,12 @@ public class GlobalConfig {
     public void setCodeGeneratorOption(CodeGeneratorOption codeGeneratorOption) {
         this.codeGeneratorOption = codeGeneratorOption;
     }
+
+    public TemplateConfig getTemplateConfig() {
+        return templateConfig;
+    }
+
+    public void setTemplateConfig(TemplateConfig templateConfig) {
+        this.templateConfig = templateConfig;
+    }
 }
