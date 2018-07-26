@@ -102,7 +102,7 @@ public class PropertiesConfigPhase implements ConfigPhase {
         List<String> tableList = Arrays.asList(StringUtils.split(tableArrays, ","));
         String basePackage = resourceBundle.getString(CodeGeneratorOption.BASE_PACKAGE);
         codeGeneratorOption.setBasePackage(basePackage);
-        String enrityArrays = resourceBundle.getString(CodeGeneratorOption.ENITTY_NAME);
+        String enrityArrays = resourceBundle.getString(CodeGeneratorOption.ENTITY_NAME);
         List<String> entityList = Arrays.asList(StringUtils.split(enrityArrays,","));
         Collection<TableConfig> tableConfigs = TableConfig.reGroup(tableList,entityList);
         codeGeneratorOption.setTableConfigs(tableConfigs);

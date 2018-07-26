@@ -19,7 +19,7 @@ public class CodeGeneratorOption {
 
     public static final String TABLE_NAME = "codeGeneratorOption.TableConfig.tableNames";
 
-    public static final String ENITTY_NAME = "codeGeneratorOption.TableConfig.entityNames";
+    public static final String ENTITY_NAME = "codeGeneratorOption.TableConfig.entityNames";
 
     public static final String AUTHOR = "codeGeneratorOption.author";
 
