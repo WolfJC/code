@@ -2,6 +2,9 @@ package com.wolfjc.code.generator.template.generate;
 
 import com.wolfjc.code.generator.config.GlobalConfig;
 import com.wolfjc.code.generator.config.TemplateConfig;
+import com.wolfjc.code.generator.constant.Constant;
+import com.wolfjc.code.generator.enums.EnumFileType;
+import com.wolfjc.code.generator.structure.FolderBuilder;
 import com.wolfjc.code.generator.template.CommonTemplateInfo;
 import com.wolfjc.code.generator.template.EntityTemplateInfo;
 import com.wolfjc.code.generator.template.TemplateInfo;
@@ -14,17 +17,26 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Collection;
 
 
 /**
+ * FreeMarker文件生成器
+ * <p>
  * 使用freemark模板引擎生成目标文件
+ *
+ * @author wolfjc
  */
 public class FreeMarkerGenerator implements FileGenerate {
 
+    /**
+     * maven插件日志
+     */
     private Log log = new SystemStreamLog();
 
     /**
@@ -32,12 +44,20 @@ public class FreeMarkerGenerator implements FileGenerate {
      */
     private Configuration cfg;
 
+    /**
+     * 模板配置
+     */
     private TemplateConfig templateConfig;
 
-
-    public FreeMarkerGenerator(){
+    /**
+     * 用于出初始化freemarker模板引擎
+     */
+    public FreeMarkerGenerator() {
         GlobalConfig globalConfig = GlobalConfig.newInstance();
         templateConfig = globalConfig.getTemplateConfig();
+        if (templateConfig == null) {
+            templateConfig = new TemplateConfig();
+        }
         this.cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
@@ -46,7 +66,7 @@ public class FreeMarkerGenerator implements FileGenerate {
         try {
             cfg.setDirectoryForTemplateLoading(new File(templateConfig.getBaseTemplatePath()));
         } catch (IOException e) {
-            log.error("初始化freemarker模板配置失败",e);
+            log.error("初始化freemarker模板配置失败", e);
             e.printStackTrace();
         }
     }
@@ -57,30 +77,34 @@ public class FreeMarkerGenerator implements FileGenerate {
             return;
         }
         EntityTemplateInfo entityTemplateInfo = templateInfo.getEntityTemplateInfo();
+        String targetFile = "";
         if (entityTemplateInfo != null) {
-            generateFile(entityTemplateInfo,TemplateConfig.DEFAULT_ENTITY);
+            targetFile = getTargetFilePath(entityTemplateInfo);
+            generateFile(entityTemplateInfo, targetFile, TemplateConfig.DEFAULT_ENTITY);
         }
         CommonTemplateInfo serviceTemplateInfo = templateInfo.getServiceTemplateInfo();
-        if (serviceTemplateInfo != null){
-            generateFile(serviceTemplateInfo,TemplateConfig.DEFAULT_SERVICE);
+        if (serviceTemplateInfo != null) {
+            targetFile = getTargetFilePath(serviceTemplateInfo);
+            generateFile(serviceTemplateInfo, targetFile, TemplateConfig.DEFAULT_SERVICE);
         }
         CommonTemplateInfo daoTemplateInfo = templateInfo.getDaoTemplateInfo();
-        if (daoTemplateInfo != null){
-            generateFile(daoTemplateInfo,TemplateConfig.DEFAULT_DAO);
+        if (daoTemplateInfo != null) {
+            targetFile = getTargetFilePath(daoTemplateInfo);
+            generateFile(daoTemplateInfo, targetFile, TemplateConfig.DEFAULT_DAO);
         }
         CommonTemplateInfo serviceImplTemplateInfo = templateInfo.getServiceImplTemplateInfo();
-        if (serviceImplTemplateInfo != null){
-            generateFile(serviceImplTemplateInfo,TemplateConfig.DEFAULT_SERVICE_IMPL);
+        if (serviceImplTemplateInfo != null) {
+            targetFile = getTargetFilePath(serviceImplTemplateInfo);
+            generateFile(serviceImplTemplateInfo, targetFile, TemplateConfig.DEFAULT_SERVICE_IMPL);
         }
     }
 
     /**
-     *
      * @param templateInfos
      */
     @Override
     public void generate(Collection<TemplateInfo> templateInfos) {
-        if (CollectionUtils.isEmpty(templateInfos)){
+        if (CollectionUtils.isEmpty(templateInfos)) {
             return;
         }
         templateInfos.forEach(templateInfo -> {
@@ -89,22 +113,42 @@ public class FreeMarkerGenerator implements FileGenerate {
     }
 
     /**
-     * 生成实体文件
-     * @param entityTemplateInfo
+     * 生成输出文件路径
+     *
+     * @param templateInfo
+     * @return
      */
-    public <T extends CommonTemplateInfo>void generateFile(T entityTemplateInfo,String type){
+    private <T extends CommonTemplateInfo> String getTargetFilePath(T templateInfo) {
+        return  Constant.RELATIVE_JAVA_PATH + File.separator +
+                FolderBuilder.convertPathToResource(templateInfo.getPackageName()) +
+                File.separator +
+                templateInfo.getClassName() + "." +
+                EnumFileType.JAVA.getSuffix();
+    }
+
+
+
+
+    /**
+     * 生成实体文件
+     *
+     * @param templateInfo
+     */
+    public <T extends CommonTemplateInfo> void generateFile(T templateInfo, String targetFile,String type) {
+        OutputStream outputStream = null;
+        Writer out = null;
         try {
             Template temp = cfg.getTemplate(type);
-            Writer out = new OutputStreamWriter(System.out);
-            temp.process(entityTemplateInfo,out);
+            File file = new File(targetFile);
+            outputStream = new FileOutputStream(file);
+            out = new OutputStreamWriter(outputStream);
+            temp.process(templateInfo, out);
+            outputStream.close();
+            out.close();
         } catch (TemplateException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void generateServiceFile(){
-
     }
 }

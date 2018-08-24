@@ -39,6 +39,11 @@ public class CommonTemplateInfo {
     private String className;
 
     /**
+     * 对应的实体名
+     */
+    private String entityName;
+
+    /**
      * 需要导入的包名
      */
     private Collection<String> imports;
@@ -89,5 +94,13 @@ public class CommonTemplateInfo {
 
     public void setImports(Collection<String> imports) {
         this.imports = imports;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
     }
 }

@@ -13,6 +13,6 @@ import ${import}
  * @author ${author}
  * @date ${dateTime}
  */
-public interface ${className}Service extends Service<${className}> {
+public interface ${entityName}Service extends Service<${entityName}> {
 
 }

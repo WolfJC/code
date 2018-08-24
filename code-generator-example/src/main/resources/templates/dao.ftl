@@ -4,7 +4,7 @@ package ${packageName};
 import com.wolfjc.common.core.BaseDao;
 import org.apache.ibatis.annotations.Mapper;
 <#list imports as import>
-import ${import}
+import ${import};
 </#list>
 
 /**
@@ -13,7 +13,7 @@ import ${import}
  * @date ${dateTime}
  */
 @Mapper
-public interface ${className}Dao extends BaseDao<${className}> {
+public interface ${entityName}Dao extends BaseDao<${entityName}> {
 
 }
 

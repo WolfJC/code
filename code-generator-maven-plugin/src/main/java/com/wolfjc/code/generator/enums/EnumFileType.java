@@ -12,7 +12,11 @@ public enum EnumFileType {
 
     PROPERTIES(1, "properties", "properties配置文件"),
 
-    YAML(2, "yml", "yml配置文件");
+    YAML(2, "yml", "yml配置文件"),
+
+    JAVA(3,"java","java文件"),
+
+    CLASS(4,"class","class文件");
 
 
     EnumFileType(int key, String suffix, String description) {

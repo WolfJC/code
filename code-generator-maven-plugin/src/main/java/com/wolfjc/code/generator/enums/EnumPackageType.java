@@ -2,19 +2,23 @@ package com.wolfjc.code.generator.enums;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 /**
  * @author xdd
  * @date 2018/7/13.
  */
 public enum EnumPackageType {
-    SERVICE("service", ".service","Service"),
-    DOMAIN("domain", ".domain",""),
-    ENTITY("entity", ".domain.entity",""),
-    BO("bo", ".domain.bo","BO"),
-    VO("vo", ".domain.vo","VO"),
-    QUERY("query", ".domain.query","Query"),
-    SERVICE_IMPL("impl", ".service.impl","ServiceImpl"),
-    DAO("dao", ".dao","Dao");
+    SERVICE("service", ".service", "Service"),
+    DOMAIN("domain", ".domain", ""),
+    ENTITY("entity", ".domain.entity", ""),
+    BO("bo", ".domain.bo", "BO"),
+    VO("vo", ".domain.vo", "VO"),
+    QUERY("query", ".domain.query", "Query"),
+    SERVICE_IMPL("impl", ".service.impl", "ServiceImpl"),
+    DAO("dao", ".dao", "Dao");
 
 
     EnumPackageType(String type, String suffix, String camelName) {
@@ -67,5 +71,20 @@ public enum EnumPackageType {
             return null;
         }
         return basePackage + enumPackageType.getSuffix();
+    }
+
+    /**
+     * 生成项目包名
+     *
+     * @param basePackage
+     * @return
+     */
+    public static Collection<String> buildAllPackage(String basePackage) {
+        if (StringUtils.isEmpty(basePackage)) {
+            return null;
+        }
+        return Arrays.stream(EnumPackageType.values())
+                .map(enumPackageType -> buildFullPathPackageName(basePackage, enumPackageType))
+                .collect(Collectors.toList());
     }
 }

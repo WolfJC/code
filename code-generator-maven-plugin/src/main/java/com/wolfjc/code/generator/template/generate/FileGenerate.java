@@ -5,7 +5,7 @@ import com.wolfjc.code.generator.template.TemplateInfo;
 import java.util.Collection;
 
 /**
- *
+ * 模板文件生成器接口
  */
 public interface FileGenerate {
 

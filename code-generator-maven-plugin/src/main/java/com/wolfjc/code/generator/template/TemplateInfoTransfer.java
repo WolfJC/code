@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
+ *
  * 将数据库的表结构信息转换为带输出的模板信息
  *
  * @author xdd
@@ -93,13 +94,15 @@ public class TemplateInfoTransfer {
 
         EntityTemplateInfo entityTemplateInfo = new EntityTemplateInfo();
 
-        entityTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.DOMAIN.getSuffix());
+        entityTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.ENTITY.getSuffix());
 
         Collection<AttributeTempalteInfo> attributes = getAttributes(tableInfo.getColumnInfos());
 
         entityTemplateInfo.setAttributes(attributes);
 
         entityTemplateInfo.setClassName(tableInfo.getEntityName());
+
+        entityTemplateInfo.setEntityName(tableInfo.getEntityName());
 
         entityTemplateInfo.setClassRemarks(tableInfo.getRemarks());
 
@@ -121,7 +124,9 @@ public class TemplateInfoTransfer {
 
         commonTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.SERVICE.getSuffix());
 
-        commonTemplateInfo.setClassName(tableInfo.getEntityName());
+        commonTemplateInfo.setClassName(tableInfo.getEntityName()+EnumPackageType.SERVICE.getCamelName());
+
+        commonTemplateInfo.setEntityName(tableInfo.getEntityName());
 
         commonTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
 
@@ -147,7 +152,9 @@ public class TemplateInfoTransfer {
 
         daoTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.DAO.getSuffix());
 
-        daoTemplateInfo.setClassName(tableInfo.getEntityName());
+        daoTemplateInfo.setClassName(tableInfo.getEntityName()+EnumPackageType.DAO.getCamelName());
+
+        daoTemplateInfo.setEntityName(tableInfo.getEntityName());
 
         daoTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
 
@@ -185,7 +192,9 @@ public class TemplateInfoTransfer {
 
         serviceImplTemplateInfo.setPackageName(codeGeneratorOption.getBasePackage() + EnumPackageType.SERVICE_IMPL.getSuffix());
 
-        serviceImplTemplateInfo.setClassName(entityName);
+        serviceImplTemplateInfo.setClassName(entityName + EnumPackageType.SERVICE_IMPL.getCamelName());
+
+        serviceImplTemplateInfo.setEntityName(entityName);
 
         serviceImplTemplateInfo.setAuthor(codeGeneratorOption.getAuthor());
 

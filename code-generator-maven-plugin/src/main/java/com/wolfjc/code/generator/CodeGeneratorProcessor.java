@@ -5,6 +5,7 @@ import com.wolfjc.code.generator.db.TableInfo;
 import com.wolfjc.code.generator.db.TableInfoHandle;
 import com.wolfjc.code.generator.parse.ConfigPhase;
 import com.wolfjc.code.generator.parse.PropertiesConfigPhase;
+import com.wolfjc.code.generator.structure.FolderBuilder;
 import com.wolfjc.code.generator.template.TemplateInfo;
 import com.wolfjc.code.generator.template.TemplateInfoTransfer;
 import com.wolfjc.code.generator.template.generate.FileGenerate;
@@ -34,11 +35,23 @@ public class CodeGeneratorProcessor {
     private TableInfoHandle tableInfoHandle;
 
 
+    /**
+     * 模板转换器
+     * <p>
+     * 用来将表结构数据转换成对应的模板数据
+     */
     private TemplateInfoTransfer templateInfoTransfer;
 
 
-
+    /**
+     * 文件生成器
+     * <p>
+     * 生成目标文件
+     */
     private FileGenerate fileGenerate;
+
+
+    private FolderBuilder folderBuilder;
 
 
     /**
@@ -68,6 +81,10 @@ public class CodeGeneratorProcessor {
         this.fileGenerate = fileGenerate;
     }
 
+    public void setFolderBuilder(FolderBuilder folderBuilder) {
+        this.folderBuilder = folderBuilder;
+    }
+
     /**
      * maven 插件日志工具
      */
@@ -82,7 +99,7 @@ public class CodeGeneratorProcessor {
 
         initHandle(globalConfig);
 
-        buildProjectStructure();
+        buildProjectStructure(globalConfig);
 
         generateCode(globalConfig);
 
@@ -93,13 +110,17 @@ public class CodeGeneratorProcessor {
      *
      * @param globalConfig
      */
-    private void initHandle(GlobalConfig globalConfig){
+    private void initHandle(GlobalConfig globalConfig) {
 
+        //设置表结构处理器
         this.setTableInfoHandle(new TableInfoHandle());
 
+        //设置
         this.setTemplateInfoTransfer(new TemplateInfoTransfer(globalConfig.getCodeGeneratorOption()));
-
+        //设置文件生成器
         this.setFileGenerate(new FreeMarkerGenerator());
+        //项目结构生成器
+        this.setFolderBuilder(new FolderBuilder());
     }
 
 
@@ -122,8 +143,9 @@ public class CodeGeneratorProcessor {
      * <p>
      * 1.根据包名生成路径
      */
-    protected void buildProjectStructure() {
+    protected void buildProjectStructure(GlobalConfig globalConfig) {
         log.info("=======生成项目结构");
+        folderBuilder.buildStructure(globalConfig.getCodeGeneratorOption().getBasePackage());
     }
 
 
@@ -131,6 +153,7 @@ public class CodeGeneratorProcessor {
      * 生成模板代码
      */
     protected void generateCode(GlobalConfig globalConfig) {
+
         log.info("=======生成模板代码...");
 
         Collection<TableInfo> tableInfos = tableInfoHandle.handle(globalConfig);
@@ -145,7 +168,6 @@ public class CodeGeneratorProcessor {
     }
 
     /**
-     *
      * @return
      */
     public static CodeGeneratorProcessor newInstance() {
@@ -156,15 +178,19 @@ public class CodeGeneratorProcessor {
         return codeGeneratorProcessor;
     }
 
+
+
     private CodeGeneratorProcessor() {
     }
 
-//
-//    public static void main(String[] args) {
-//        File configPath = new File("C:\\Users\\xudongdong\\Home\\code\\code-generator-example\\src\\main\\resources\\code-generator.properties");
-//
-//        CodeGeneratorProcessor codeGeneratorProcessor = CodeGeneratorProcessor.newInstance();
-//
-//        codeGeneratorProcessor.generate(configPath);
-//    }
+    public static void main(String[] args) {
+
+        File configPath = new File("C:\\Users\\xudongdong\\Home\\code\\code-generator-example\\src\\main\\resources\\code-generator.properties");
+
+        CodeGeneratorProcessor codeGeneratorProcessor = CodeGeneratorProcessor.newInstance();
+
+        codeGeneratorProcessor.generate(configPath);
+    }
 }
+
+
