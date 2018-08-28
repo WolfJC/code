@@ -56,7 +56,9 @@ public class DataTypeMapper {
         String upper = sqlType.toUpperCase();
 
         EnumJavaType javaType = map.get(upper);
-
+        if(null==javaType){
+            return EnumJavaType.STRING;
+        }
         return javaType;
     }
 }
