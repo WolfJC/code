@@ -1,0 +1,18 @@
+#jdbc配置
+jdbc:
+  url: jdbc:mysql://localhost:3306/xiaoyaoji?userSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT%2B8
+  username: user
+  password: 123456
+  driver: com.mysql.cj.jdbc.Driver
+
+basePackage: com.xmall
+#目标表
+tables:
+  - name: project_user
+    entity: ProjectUser
+  - name: project_log
+    entity: ProjectLog
+#注释配置
+note:
+  author: wolfjc
+  date: 2019-03-14

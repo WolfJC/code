@@ -68,7 +68,7 @@
 				<artifactId>code-generator-maven-plugin</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<configuration>
-					<configPath>${basedir}/src/main/resources/code-generator.properties</configPath>
+					<configFile>${basedir}/src/main/resources/code-generator.yml</configFile>
 				</configuration>
 			</plugin>
 		</plugins>

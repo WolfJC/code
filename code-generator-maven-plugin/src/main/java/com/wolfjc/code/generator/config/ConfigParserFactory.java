@@ -1,7 +1,7 @@
 package com.wolfjc.code.generator.config;
 
 
-import com.wolfjc.code.generator.enums.EnumFileType;
+import com.wolfjc.code.generator.constant.EnumFileType;
 import com.wolfjc.code.generator.exception.UnAcceptableFileTypeException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;

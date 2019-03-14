@@ -1,64 +1,33 @@
 package com.wolfjc.code.generator.config;
 
-
-import org.apache.commons.collections.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 /**
- * 表配置
- * ----
- * 需要生成模板的表相关配置
- *
- * @author xdd
- * @date 2018/7/13.
+ * 表相关配置
  */
 public class TableConfig {
 
     /**
      * 表名
      */
-    private String tableName;
+    private String name;
 
     /**
      * 实体名
      */
-    private String entityName;
+    private String entity;
 
-    public String getTableName() {
-        return tableName;
+    public String getName() {
+        return name;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEntityName() {
-        return entityName;
+    public String getEntity() {
+        return entity;
     }
 
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
-    }
-
-
-    public static Collection<TableConfig> reGroup(List<String> tableNames,List<String> classNames){
-        if (CollectionUtils.isEmpty(tableNames)) {
-            return new ArrayList<>();
-        }
-        if (tableNames.size() != classNames.size()){
-            throw new IllegalArgumentException("表名称个数应与类名称保持一致");
-        }
-        Collection<TableConfig> tableConfigs = new ArrayList<>();
-        TableConfig tableConfig = null;
-        for (int i = 0 ;i < tableNames.size();i++){
-            tableConfig = new TableConfig();
-            tableConfig.setTableName(tableNames.get(i));
-            tableConfig.setEntityName(classNames.get(i));
-            tableConfigs.add(tableConfig);
-        }
-        return tableConfigs;
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 }
