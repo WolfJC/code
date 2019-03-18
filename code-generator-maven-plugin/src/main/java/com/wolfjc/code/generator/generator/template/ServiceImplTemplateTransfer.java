@@ -4,7 +4,9 @@ package com.wolfjc.code.generator.generator.template;
 import com.wolfjc.code.generator.config.Config;
 import com.wolfjc.code.generator.constant.EnumPackageType;
 import com.wolfjc.code.generator.table.TableInfo;
+import com.wolfjc.code.generator.util.FileUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -51,19 +53,19 @@ public class ServiceImplTemplateTransfer implements Transfer<CommonTemplateInfo 
     }
 
     private void importEntity(Collection<String> imports, String entityName) {
-        String entityImport = config.getBasePackage() +EnumPackageType.DOMAIN.getSuffix() + entityName;
+        String entityImport = config.getBasePackage() +EnumPackageType.ENTITY.getSuffix()+ FileUtil.PACKAGE_SEPARATOR + entityName;
         imports.add(entityImport);
     }
 
 
     private void importDao(Collection<String> imports,String entityName){
-        String daoImport = config.getBasePackage() + EnumPackageType.DAO.getSuffix() + entityName
+        String daoImport = config.getBasePackage() + EnumPackageType.DAO.getSuffix() +FileUtil.PACKAGE_SEPARATOR + entityName
                 + EnumPackageType.DAO.getCamelName();
         imports.add(daoImport);
     }
 
     private void importService(Collection<String> imports,String entityName){
-        String daoImport = config.getBasePackage() + EnumPackageType.SERVICE.getSuffix() + entityName
+        String daoImport = config.getBasePackage() + EnumPackageType.SERVICE.getSuffix() + FileUtil.PACKAGE_SEPARATOR+ entityName
                 + EnumPackageType.SERVICE.getCamelName();
         imports.add(daoImport);
     }

@@ -4,6 +4,7 @@ package com.wolfjc.code.generator.generator.template;
 import com.wolfjc.code.generator.config.Config;
 import com.wolfjc.code.generator.constant.EnumPackageType;
 import com.wolfjc.code.generator.table.TableInfo;
+import com.wolfjc.code.generator.util.FileUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +57,7 @@ public class ServiceTemplateTransfer implements Transfer<CommonTemplateInfo , Ta
      *
      */
     private void importEntity(Collection<String> imports, String entityName) {
-        String entityImport = config.getBasePackage() +EnumPackageType.DOMAIN.getSuffix() + entityName;
+        String entityImport = config.getBasePackage() +EnumPackageType.ENTITY.getSuffix()+ FileUtil.PACKAGE_SEPARATOR + entityName;
         imports.add(entityImport);
     }
 }
