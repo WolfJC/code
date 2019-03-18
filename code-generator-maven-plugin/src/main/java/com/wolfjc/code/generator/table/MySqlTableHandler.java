@@ -135,6 +135,13 @@ public class MySqlTableHandler implements TableHandler{
             String remarks = resultSet.getString(EnumTableInfo.REMARKS.getName());
             tableInfo.setRemarks(remarks);
         }
+
+        ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
+        if (primaryKeys.next()){
+            String primaryKey = resultSet.getString(EnumTableInfo.PRIMARY_KEY.getName());
+            tableInfo.setPrimaryKey(primaryKey);
+        }
+
         Collection<ColumnInfo> columnInfos = getColumInfos(metaData, tableName);
         tableInfo.setColumnInfos(columnInfos);
         return tableInfo;

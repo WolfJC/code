@@ -32,6 +32,13 @@ public class TableInfo {
      */
     private Collection<ColumnInfo> columnInfos;
 
+    /**
+     * '主键
+     *
+     * 多主键按字段顺序取第一个
+     */
+    private String primaryKey;
+
 
     public String getTableName() {
         return tableName;
@@ -63,5 +70,13 @@ public class TableInfo {
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;
+    }
+
+    public String getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
     }
 }

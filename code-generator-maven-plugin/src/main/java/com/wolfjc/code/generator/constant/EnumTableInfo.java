@@ -8,7 +8,9 @@ public enum EnumTableInfo {
 
     TABLE_NAME("TABLE_NAME"),
 
-    REMARKS("REMARKS");
+    REMARKS("REMARKS"),
+
+    PRIMARY_KEY("COLUMN_NAME");
 
     EnumTableInfo(String name) {
         this.name = name;
